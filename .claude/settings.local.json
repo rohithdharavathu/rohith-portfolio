@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest *)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(node -e \"const l = require\\('./node_modules/lucide-react'\\); console.log\\(Object.keys\\(l\\).filter\\(k => k.toLowerCase\\(\\).includes\\('git'\\) || k.toLowerCase\\(\\).includes\\('link'\\) || k.toLowerCase\\(\\).includes\\('linked'\\)\\)\\)\")",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(node *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}
