@@ -11,7 +11,7 @@ const points = [
 
 const flowNodes = [
   { label: 'brain/', sublabel: 'Markdown files', color: '#8b5cf6' },
-  { label: 'GitHub API', sublabel: 'Content delivery', color: '#3b82f6' },
+  { label: 'GitHub API', sublabel: 'Content delivery', color: '#7c3aed' },
   { label: 'FastAPI', sublabel: 'Backend router', color: '#06b6d4' },
   { label: 'Claude API', sublabel: 'Two-call agent', color: '#22c55e' },
   { label: 'Next.js', sublabel: 'Frontend', color: '#f59e0b' },
@@ -45,7 +45,7 @@ export default function BuiltWithClaude() {
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: '1rem',
-              color: '#a0a0b0',
+              color: '#8888aa',
               maxWidth: '480px',
               margin: '0 auto',
             }}
@@ -73,7 +73,7 @@ export default function BuiltWithClaude() {
               >
                 <p
                   style={{
-                    fontFamily: "'Geist Mono', monospace",
+                    fontFamily: "'DM Mono', monospace",
                     fontSize: '0.78rem',
                     fontWeight: 600,
                     color: node.color,
@@ -82,7 +82,7 @@ export default function BuiltWithClaude() {
                 >
                   {node.label}
                 </p>
-                <p style={{ fontSize: '0.65rem', color: '#606070', fontFamily: "'Inter', sans-serif" }}>
+                <p style={{ fontSize: '0.65rem', color: '#44445a', fontFamily: "'Inter', sans-serif" }}>
                   {node.sublabel}
                 </p>
               </div>
@@ -104,12 +104,12 @@ export default function BuiltWithClaude() {
               className="flex gap-3"
               style={{
                 padding: '1rem 1.25rem',
-                background: 'rgba(255,255,255,0.02)',
-                border: '1px solid rgba(255,255,255,0.05)',
+                background: 'rgba(124,58,237,0.04)',
+                border: '1px solid rgba(124,58,237,0.12)',
                 borderRadius: '10px',
               }}
             >
-              <span style={{ color: '#3b82f6', flexShrink: 0, marginTop: '2px' }}>▸</span>
+              <span style={{ color: '#7c3aed', flexShrink: 0, marginTop: '2px' }}>▸</span>
               <p style={{ fontSize: '0.875rem', color: '#c0c0d0', fontFamily: "'Inter', sans-serif", lineHeight: 1.6 }}>
                 {point}
               </p>

@@ -27,9 +27,9 @@ const publications = [
   },
 ];
 
-const typeColors: Record<string, string> = {
-  IEEE: '#3b82f6',
-  Springer: '#f59e0b',
+const typeColors: Record<string, { color: string; bg: string; border: string }> = {
+  IEEE: { color: '#06b6d4', bg: 'rgba(6,182,212,0.08)', border: 'rgba(6,182,212,0.25)' },
+  Springer: { color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)' },
 };
 
 export default function Publications() {
@@ -51,62 +51,88 @@ export default function Publications() {
         </motion.div>
 
         <div className="flex flex-col gap-4 max-w-3xl mx-auto">
-          {publications.map((pub, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, x: -24 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.12 }}
-              className="card-base p-6"
-            >
-              <div className="flex items-start gap-4">
-                <div
-                  className="flex-shrink-0 px-2.5 py-1 rounded text-xs font-bold"
-                  style={{
-                    background: `${typeColors[pub.type]}15`,
-                    border: `1px solid ${typeColors[pub.type]}40`,
-                    color: typeColors[pub.type],
-                    fontFamily: "'Geist Mono', monospace",
-                    marginTop: '2px',
-                  }}
-                >
-                  {pub.type}
-                </div>
-
-                <div className="flex-1">
-                  <h3
+          {publications.map((pub, i) => {
+            const tc = typeColors[pub.type] ?? { color: '#8888aa', bg: 'rgba(136,136,170,0.08)', border: 'rgba(136,136,170,0.25)' };
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -24 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.5, delay: i * 0.12 }}
+                className="card-base card-top-border"
+                style={{ padding: '24px' }}
+              >
+                <div className="flex items-start gap-4">
+                  {/* Year — prominent */}
+                  <div
+                    className="flex-shrink-0 flex flex-col items-center justify-center rounded-xl"
                     style={{
-                      fontFamily: "'Syne', sans-serif",
-                      fontSize: '1rem',
-                      fontWeight: 600,
-                      color: '#f0f0f0',
-                      lineHeight: 1.4,
-                      marginBottom: '0.5rem',
+                      width: '56px',
+                      minWidth: '56px',
+                      background: 'rgba(124,58,237,0.08)',
+                      border: '1px solid rgba(124,58,237,0.2)',
+                      padding: '10px 0',
                     }}
                   >
-                    {pub.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontFamily: "'Inter', sans-serif",
-                      fontSize: '0.82rem',
-                      color: '#808090',
-                      marginBottom: '0.75rem',
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {pub.venue}
-                  </p>
-                  <div className="flex items-center justify-between">
                     <span
                       style={{
-                        fontFamily: "'Geist Mono', monospace",
-                        fontSize: '0.75rem',
-                        color: '#606070',
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                        fontSize: '1.1rem',
+                        fontWeight: 800,
+                        color: '#7c3aed',
+                        lineHeight: 1,
                       }}
                     >
                       {pub.year}
                     </span>
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    {/* Badge */}
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        background: tc.bg,
+                        border: `1px solid ${tc.border}`,
+                        color: tc.color,
+                        fontFamily: "'DM Mono', monospace",
+                        fontSize: '0.65rem',
+                        fontWeight: 600,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase' as const,
+                        padding: '3px 10px',
+                        borderRadius: '999px',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {pub.type}
+                    </span>
+
+                    <h3
+                      style={{
+                        fontFamily: "'Bricolage Grotesque', sans-serif",
+                        fontSize: '1rem',
+                        fontWeight: 600,
+                        color: '#f8f8ff',
+                        lineHeight: 1.45,
+                        marginBottom: '0.5rem',
+                      }}
+                    >
+                      {pub.title}
+                    </h3>
+
+                    <p
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: '0.82rem',
+                        color: '#8888aa',
+                        marginBottom: '14px',
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {pub.venue}
+                    </p>
+
                     <a
                       href={pub.link}
                       target="_blank"
@@ -114,22 +140,22 @@ export default function Publications() {
                       className="flex items-center gap-1.5"
                       style={{
                         fontSize: '0.78rem',
-                        color: '#606070',
+                        color: '#44445a',
                         textDecoration: 'none',
                         fontFamily: "'Inter', sans-serif",
                         transition: 'color 0.2s',
+                        width: 'fit-content',
                       }}
-                      onMouseEnter={(e) => ((e.currentTarget).style.color = '#a0a0b0')}
-                      onMouseLeave={(e) => ((e.currentTarget).style.color = '#606070')}
+                      onMouseEnter={(e) => ((e.currentTarget).style.color = '#8888aa')}
+                      onMouseLeave={(e) => ((e.currentTarget).style.color = '#44445a')}
                     >
-                      View Paper
-                      <ExternalLink size={12} />
+                      View Paper <ExternalLink size={12} />
                     </a>
                   </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

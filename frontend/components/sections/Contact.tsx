@@ -30,9 +30,9 @@ export default function Contact() {
   };
 
   const links = [
-    { icon: Mail, label: 'Email', href: 'mailto:rohith.dharavathu.112@gmail.com', value: 'rohith.dharavathu.112@gmail.com' },
-    { icon: Link2, label: 'LinkedIn', href: '#', value: 'linkedin.com/in/rohithreddy' },
-    { icon: GitBranch, label: 'GitHub', href: 'https://github.com/rohithdharavathu', value: 'github.com/rohithdharavathu' },
+    { icon: Mail, label: 'Email', href: 'mailto:rohith.dharavathu.112@gmail.com', value: 'rohith.dharavathu.112@gmail.com', color: '#7c3aed' },
+    { icon: Link2, label: 'LinkedIn', href: '#', value: 'linkedin.com/in/rohithreddy', color: '#06b6d4' },
+    { icon: GitBranch, label: 'GitHub', href: 'https://github.com/rohithdharavathu', value: 'github.com/rohithdharavathu', color: '#8b5cf6' },
   ];
 
   return (
@@ -50,7 +50,7 @@ export default function Contact() {
           <p
             style={{
               fontFamily: "'Inter', sans-serif",
-              color: '#a0a0b0',
+              color: '#8888aa',
               marginTop: '1rem',
               fontSize: '1rem',
             }}
@@ -67,26 +67,26 @@ export default function Contact() {
             transition={{ duration: 0.5, delay: 0.15 }}
             className="flex flex-col gap-4"
           >
-            {links.map(({ icon: Icon, label, href, value }) => (
+            {links.map(({ icon: Icon, label, href, value, color }) => (
               <a
                 key={label}
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card-base flex items-center gap-4 p-5 group"
-                style={{ textDecoration: 'none' }}
+                className="card-base flex items-center gap-4 group"
+                style={{ textDecoration: 'none', padding: '20px 24px' }}
               >
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 group-hover:scale-110"
-                  style={{ background: 'rgba(59,130,246,0.1)', border: '1px solid rgba(59,130,246,0.2)' }}
+                  style={{ background: `${color}12`, border: `1px solid ${color}30` }}
                 >
-                  <Icon size={18} style={{ color: '#3b82f6' }} />
+                  <Icon size={18} style={{ color }} />
                 </div>
                 <div>
-                  <p style={{ fontFamily: "'Syne', sans-serif", fontSize: '0.9rem', fontWeight: 600, color: '#f0f0f0', marginBottom: '0.15rem' }}>
+                  <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: '0.9rem', fontWeight: 600, color: '#f8f8ff', marginBottom: '0.15rem' }}>
                     {label}
                   </p>
-                  <p style={{ fontFamily: "'Geist Mono', monospace", fontSize: '0.72rem', color: '#606070' }}>
+                  <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.72rem', color: '#44445a' }}>
                     {value}
                   </p>
                 </div>
@@ -115,14 +115,14 @@ export default function Contact() {
                 required
                 className="px-4 py-3 rounded-lg text-sm"
                 style={{
-                  background: '#0d0d15',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: '#f0f0f0',
+                  background: '#0d0d1a',
+                  border: '1px solid rgba(255,255,255,0.07)',
+                  color: '#f8f8ff',
                   fontFamily: "'Inter', sans-serif",
                   outline: 'none',
                 }}
-                onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.4)'; }}
-                onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+                onFocus={(e) => { e.target.style.borderColor = 'rgba(124,58,237,0.4)'; }}
+                onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.07)'; }}
               />
             ))}
             <textarea
@@ -133,14 +133,14 @@ export default function Contact() {
               rows={4}
               className="px-4 py-3 rounded-lg text-sm resize-none"
               style={{
-                background: '#0d0d15',
-                border: '1px solid rgba(255,255,255,0.08)',
-                color: '#f0f0f0',
+                background: '#0d0d1a',
+                border: '1px solid rgba(255,255,255,0.07)',
+                color: '#f8f8ff',
                 fontFamily: "'Inter', sans-serif",
                 outline: 'none',
               }}
-              onFocus={(e) => { e.target.style.borderColor = 'rgba(59,130,246,0.4)'; }}
-              onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+              onFocus={(e) => { e.target.style.borderColor = 'rgba(124,58,237,0.4)'; }}
+              onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.07)'; }}
             />
             <button
               type="submit"

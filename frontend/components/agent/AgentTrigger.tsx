@@ -28,29 +28,28 @@ export default function AgentTrigger() {
           exit={{ opacity: 0, y: 80 }}
           transition={{ type: 'spring', damping: 20, stiffness: 260 }}
           onClick={() => openAgent()}
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl cursor-pointer"
+          className="rotating-border fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl cursor-pointer"
           style={{
             background: '#111118',
-            border: '1px solid rgba(59,130,246,0.3)',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(59,130,246,0.1)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
             minWidth: '180px',
           }}
-          whileHover={{ scale: 1.03, boxShadow: '0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(59,130,246,0.15)' }}
+          whileHover={{ scale: 1.03, boxShadow: '0 12px 40px rgba(0,0,0,0.5), 0 0 24px rgba(124,58,237,0.2)' }}
           whileTap={{ scale: 0.97 }}
         >
           <div
             className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #3b82f6, #06b6d4)' }}
+            style={{ background: 'linear-gradient(135deg, #7c3aed, #06b6d4)' }}
           >
             <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'white' }}>AI</span>
           </div>
           <div className="text-left">
             <p
               style={{
-                fontFamily: "'Syne', sans-serif",
+                fontFamily: "'Bricolage Grotesque', sans-serif",
                 fontSize: '0.8rem',
                 fontWeight: 700,
-                color: '#f0f0f0',
+                color: '#f8f8ff',
                 lineHeight: 1.2,
               }}
             >
@@ -60,7 +59,7 @@ export default function AgentTrigger() {
               <span className="pulse-dot" style={{ width: '5px', height: '5px' }} />
               <span
                 style={{
-                  fontFamily: "'Geist Mono', monospace",
+                  fontFamily: "'DM Mono', monospace",
                   fontSize: '0.65rem',
                   color: '#22c55e',
                 }}

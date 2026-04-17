@@ -1,55 +1,27 @@
 'use client';
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import SkillCluster from '@/components/ui/SkillCluster';
 
 const clusters = [
   {
     category: 'ML / NLP',
-    icon: '🧠',
     color: '#8b5cf6',
-    skills: [
-      { name: 'Python', level: 95 },
-      { name: 'scikit-learn', level: 88 },
-      { name: 'NLP Pipelines', level: 90 },
-      { name: 'Model Training & Evaluation', level: 85 },
-      { name: 'Transformers / HuggingFace', level: 82 },
-    ],
+    skills: ['Python', 'scikit-learn', 'NLP Pipelines', 'Transformers', 'Model Training', 'Feature Engineering', 'Statistical Modeling'],
   },
   {
     category: 'Generative AI',
-    icon: '⚡',
-    color: '#3b82f6',
-    skills: [
-      { name: 'Claude API / Anthropic SDK', level: 95 },
-      { name: 'LangChain', level: 88 },
-      { name: 'RAG Architectures', level: 90 },
-      { name: 'Prompt Engineering', level: 92 },
-      { name: 'Multi-Agent Systems', level: 85 },
-    ],
+    color: '#7c3aed',
+    skills: ['Claude API', 'LangChain', 'RAG', 'Prompt Engineering', 'Multi-Agent Systems', 'Streaming', 'Tool Use'],
   },
   {
     category: 'Cloud & Infrastructure',
-    icon: '☁️',
-    color: '#f59e0b',
-    skills: [
-      { name: 'AWS (EC2, Lambda, ECS, S3)', level: 82 },
-      { name: 'Docker', level: 85 },
-      { name: 'FastAPI', level: 90 },
-      { name: 'CI/CD Pipelines', level: 78 },
-    ],
+    color: '#06b6d4',
+    skills: ['AWS (EC2/Lambda/ECS/S3)', 'Docker', 'FastAPI', 'REST APIs', 'CI/CD', 'GitHub API'],
   },
   {
     category: 'Data & Tools',
-    icon: '🔧',
-    color: '#06b6d4',
-    skills: [
-      { name: 'SQL / DuckDB', level: 88 },
-      { name: 'Data Pipelines', level: 85 },
-      { name: 'tree-sitter / AST Parsing', level: 80 },
-      { name: 'ChromaDB / Vector DBs', level: 75 },
-      { name: 'Git / GitHub API', level: 90 },
-    ],
+    color: '#22c55e',
+    skills: ['SQL', 'DuckDB', 'Power BI', 'A/B Testing', 'tree-sitter', 'ChromaDB', 'Data Pipelines'],
   },
 ];
 
@@ -61,9 +33,9 @@ export default function Skills() {
     <section id="skills" className="section-padding" ref={ref}>
       <div className="section-container">
         <motion.div
-          initial={{ opacity: 0, y: 32 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7 }}
           className="text-center mb-12"
         >
           <p className="section-label">Technical Depth</p>
@@ -73,7 +45,53 @@ export default function Skills() {
 
         <div className="grid md:grid-cols-2 gap-5">
           {clusters.map((cluster, i) => (
-            <SkillCluster key={cluster.category} {...cluster} index={i} isInView={isInView} />
+            <motion.div
+              key={cluster.category}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="card-base"
+              style={{ padding: '24px' }}
+            >
+              <div className="flex items-center gap-2 mb-5">
+                <div
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    background: cluster.color,
+                    boxShadow: `0 0 8px ${cluster.color}80`,
+                    flexShrink: 0,
+                  }}
+                />
+                <h3
+                  style={{
+                    fontFamily: "'DM Mono', monospace",
+                    fontSize: '0.75rem',
+                    fontWeight: 500,
+                    color: cluster.color,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  {cluster.category}
+                </h3>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {cluster.skills.map((skill, j) => (
+                  <motion.span
+                    key={skill}
+                    className="skill-pill"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ delay: i * 0.1 + j * 0.04, duration: 0.3 }}
+                  >
+                    {skill}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>

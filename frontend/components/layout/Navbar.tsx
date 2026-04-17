@@ -36,7 +36,7 @@ export default function Navbar() {
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        background: scrolled ? 'rgba(10, 10, 15, 0.95)' : 'transparent',
+        background: scrolled ? 'rgba(8,8,16,0.95)' : 'transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
         borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
         boxShadow: scrolled ? '0 4px 30px rgba(0,0,0,0.3)' : 'none',
@@ -50,8 +50,8 @@ export default function Navbar() {
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             className="flex items-center justify-center w-10 h-10 rounded-lg font-bold text-sm transition-all duration-200 hover:scale-105"
             style={{
-              background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
-              fontFamily: "'Syne', sans-serif",
+              background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+              fontFamily: "'Bricolage Grotesque', sans-serif",
               color: 'white',
               fontSize: '0.85rem',
               letterSpacing: '0.02em',
@@ -68,18 +68,18 @@ export default function Navbar() {
                 onClick={() => scrollTo(link.href)}
                 className="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200"
                 style={{
-                  color: '#a0a0b0',
+                  color: '#8888aa',
                   fontFamily: "'Inter', sans-serif",
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
                 }}
                 onMouseEnter={(e) => {
-                  (e.target as HTMLButtonElement).style.color = '#f0f0f0';
+                  (e.target as HTMLButtonElement).style.color = '#f8f8ff';
                   (e.target as HTMLButtonElement).style.background = 'rgba(255,255,255,0.05)';
                 }}
                 onMouseLeave={(e) => {
-                  (e.target as HTMLButtonElement).style.color = '#a0a0b0';
+                  (e.target as HTMLButtonElement).style.color = '#8888aa';
                   (e.target as HTMLButtonElement).style.background = 'transparent';
                 }}
               >
@@ -91,8 +91,8 @@ export default function Navbar() {
               onClick={() => { scrollTo('#agent'); openAgent(); }}
               className="flex items-center gap-2 ml-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200"
               style={{
-                background: 'rgba(34, 197, 94, 0.1)',
-                border: '1px solid rgba(34, 197, 94, 0.25)',
+                background: 'rgba(34,197,94,0.08)',
+                border: '1px solid rgba(34,197,94,0.25)',
                 color: '#22c55e',
                 fontFamily: "'Inter', sans-serif",
                 cursor: 'pointer',
@@ -107,7 +107,7 @@ export default function Navbar() {
           <button
             className="md:hidden p-2 rounded-md"
             onClick={() => setMobileOpen(!mobileOpen)}
-            style={{ color: '#a0a0b0', background: 'transparent', border: 'none', cursor: 'pointer' }}
+            style={{ color: '#8888aa', background: 'transparent', border: 'none', cursor: 'pointer' }}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -122,7 +122,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             style={{
-              background: 'rgba(10, 10, 15, 0.98)',
+              background: 'rgba(8,8,16,0.98)',
               borderTop: '1px solid rgba(255,255,255,0.06)',
               overflow: 'hidden',
             }}
@@ -134,7 +134,7 @@ export default function Navbar() {
                   onClick={() => scrollTo(link.href)}
                   className="text-left px-4 py-3 text-sm font-medium rounded-md w-full"
                   style={{
-                    color: '#a0a0b0',
+                    color: '#8888aa',
                     fontFamily: "'Inter', sans-serif",
                     background: 'transparent',
                     border: 'none',
@@ -148,8 +148,8 @@ export default function Navbar() {
                 onClick={() => { setMobileOpen(false); scrollTo('#agent'); openAgent(); }}
                 className="flex items-center gap-2 px-4 py-3 rounded-md text-sm font-medium mt-2"
                 style={{
-                  background: 'rgba(34, 197, 94, 0.1)',
-                  border: '1px solid rgba(34, 197, 94, 0.25)',
+                  background: 'rgba(34,197,94,0.08)',
+                  border: '1px solid rgba(34,197,94,0.25)',
                   color: '#22c55e',
                   fontFamily: "'Inter', sans-serif",
                   cursor: 'pointer',

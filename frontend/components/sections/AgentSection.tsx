@@ -28,7 +28,7 @@ export default function AgentSection() {
           <h2 className="section-title">Have questions? I built an AI that answers as me.</h2>
           <p
             style={{
-              color: '#a0a0b0',
+              color: '#8888aa',
               fontFamily: "'Inter', sans-serif",
               maxWidth: '520px',
               margin: '0 auto 2rem',
@@ -51,9 +51,9 @@ export default function AgentSection() {
           >
             <p
               style={{
-                fontFamily: "'Geist Mono', monospace",
+                fontFamily: "'DM Mono', monospace",
                 fontSize: '0.72rem',
-                color: '#606070',
+                color: '#44445a',
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 marginBottom: '0.25rem',
@@ -66,8 +66,8 @@ export default function AgentSection() {
                 key={q}
                 className="text-left px-4 py-3 rounded-xl text-sm transition-all duration-200"
                 style={{
-                  background: 'rgba(59,130,246,0.06)',
-                  border: '1px solid rgba(59,130,246,0.15)',
+                  background: 'rgba(124,58,237,0.06)',
+                  border: '1px solid rgba(124,58,237,0.18)',
                   color: '#c0c0d0',
                   fontFamily: "'Inter', sans-serif",
                   cursor: 'pointer',
@@ -75,13 +75,13 @@ export default function AgentSection() {
                 }}
                 onClick={() => openAgent(q)}
                 onMouseEnter={(e) => {
-                  (e.currentTarget).style.background = 'rgba(59,130,246,0.12)';
-                  (e.currentTarget).style.borderColor = 'rgba(59,130,246,0.3)';
-                  (e.currentTarget).style.color = '#f0f0f0';
+                  (e.currentTarget).style.background = 'rgba(124,58,237,0.12)';
+                  (e.currentTarget).style.borderColor = 'rgba(124,58,237,0.35)';
+                  (e.currentTarget).style.color = '#f8f8ff';
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget).style.background = 'rgba(59,130,246,0.06)';
-                  (e.currentTarget).style.borderColor = 'rgba(59,130,246,0.15)';
+                  (e.currentTarget).style.background = 'rgba(124,58,237,0.06)';
+                  (e.currentTarget).style.borderColor = 'rgba(124,58,237,0.18)';
                   (e.currentTarget).style.color = '#c0c0d0';
                 }}
               >
@@ -96,7 +96,7 @@ export default function AgentSection() {
                 border: '1px solid rgba(34,197,94,0.15)',
               }}
             >
-              <p style={{ fontSize: '0.72rem', color: '#404050', fontFamily: "'Geist Mono', monospace", lineHeight: 1.5 }}>
+              <p style={{ fontSize: '0.72rem', color: '#44445a', fontFamily: "'DM Mono', monospace", lineHeight: 1.5 }}>
                 Powered by Claude + logical tree RAG over markdown knowledge files.
               </p>
             </div>

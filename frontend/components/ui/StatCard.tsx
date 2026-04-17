@@ -10,31 +10,36 @@ interface StatCardProps {
 export default function StatCard({ value, label, icon }: StatCardProps) {
   return (
     <motion.div
-      whileHover={{ scale: 1.03 }}
-      className="card-base p-5 text-center"
+      whileHover={{ scale: 1.02, translateY: -2 }}
+      className="card-base flex items-center gap-4"
+      style={{ padding: '20px 24px' }}
     >
-      {icon && <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{icon}</div>}
-      <div
-        className="gradient-text"
-        style={{
-          fontFamily: "'Syne', sans-serif",
-          fontSize: '2rem',
-          fontWeight: 800,
-          lineHeight: 1,
-          marginBottom: '0.4rem',
-        }}
-      >
-        {value}
-      </div>
-      <div
-        style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: '0.85rem',
-          color: '#a0a0b0',
-          fontWeight: 500,
-        }}
-      >
-        {label}
+      {icon && (
+        <span style={{ fontSize: '1.4rem', flexShrink: 0 }}>{icon}</span>
+      )}
+      <div>
+        <div
+          className="gradient-text"
+          style={{
+            fontFamily: "'Bricolage Grotesque', sans-serif",
+            fontSize: '1.8rem',
+            fontWeight: 800,
+            lineHeight: 1,
+            marginBottom: '0.25rem',
+          }}
+        >
+          {value}
+        </div>
+        <div
+          style={{
+            fontFamily: "'DM Mono', monospace",
+            fontSize: '0.72rem',
+            color: '#8888aa',
+            fontWeight: 400,
+          }}
+        >
+          {label}
+        </div>
       </div>
     </motion.div>
   );

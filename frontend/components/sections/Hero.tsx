@@ -6,21 +6,48 @@ import NeuralBackground from '@/components/ui/NeuralBackground';
 import { useAgent } from '@/components/agent/AgentContext';
 
 const subtitles = ['Data Scientist', 'ML Engineer', 'GenAI Builder', 'CodeSage Creator'];
+const FIRST = 'Rohith';
+const LAST = 'Dharavathu';
+
+const letterVariants = {
+  hidden: { opacity: 0, filter: 'blur(12px)', y: 16 },
+  visible: (i: number) => ({
+    opacity: 1,
+    filter: 'blur(0px)',
+    y: 0,
+    transition: { delay: 0.4 + i * 0.055, duration: 0.55, ease: 'easeOut' as const },
+  }),
+};
+
+function AnimatedWord({ word, startDelay = 0 }: { word: string; startDelay?: number }) {
+  return (
+    <span style={{ display: 'inline-block' }}>
+      {word.split('').map((ch, i) => (
+        <motion.span
+          key={i}
+          custom={i + startDelay}
+          variants={letterVariants}
+          initial="hidden"
+          animate="visible"
+          style={{ display: 'inline-block', whiteSpace: 'pre' }}
+        >
+          {ch}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
 
 export default function Hero() {
   const [subtitleIndex, setSubtitleIndex] = useState(0);
   const { openAgent } = useAgent();
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setSubtitleIndex((i) => (i + 1) % subtitles.length);
-    }, 2400);
-    return () => clearInterval(interval);
+    const t = setInterval(() => setSubtitleIndex((i) => (i + 1) % subtitles.length), 2600);
+    return () => clearInterval(t);
   }, []);
 
-  const scrollTo = (id: string) => {
-    document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const scrollTo = (id: string) => document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' });
 
   return (
     <section
@@ -30,73 +57,90 @@ export default function Hero() {
     >
       <NeuralBackground />
 
-      {/* Radial glow */}
+      {/* Subtle CSS grid overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(59,130,246,0.08) 0%, transparent 70%)',
+          backgroundImage:
+            'linear-gradient(rgba(124,58,237,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.03) 1px, transparent 1px)',
+          backgroundSize: '72px 72px',
         }}
       />
 
-      <div className="relative z-10 section-container text-center flex flex-col items-center" style={{ paddingTop: '80px' }}>
-        {/* AI tag */}
+      {/* Glow orb behind name */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          width: '700px',
+          height: '420px',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -56%)',
+          background: 'radial-gradient(ellipse at center, rgba(124,58,237,0.18) 0%, rgba(6,182,212,0.08) 50%, transparent 75%)',
+          filter: 'blur(40px)',
+        }}
+      />
+
+      <div
+        className="relative z-10 section-container text-center flex flex-col items-center"
+        style={{ paddingTop: '80px' }}
+      >
+        {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full"
+          transition={{ delay: 0.15 }}
+          className="flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full"
           style={{
-            background: 'rgba(59, 130, 246, 0.08)',
-            border: '1px solid rgba(59, 130, 246, 0.2)',
-            fontSize: '0.78rem',
-            color: '#a0a0b0',
-            fontFamily: "'Geist Mono', monospace",
+            background: 'rgba(124,58,237,0.08)',
+            border: '1px solid rgba(124,58,237,0.22)',
+            fontSize: '0.75rem',
+            color: '#a78bfa',
+            fontFamily: "'DM Mono', monospace",
           }}
         >
-          <Cpu size={12} style={{ color: '#3b82f6' }} />
+          <Cpu size={11} style={{ color: '#7c3aed' }} />
           AI-powered — ask me anything
         </motion.div>
 
-        {/* Name */}
-        <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.7 }}
+        {/* Name — letter blur-in */}
+        <h1
           style={{
-            fontSize: 'clamp(3rem, 8vw, 6.5rem)',
+            fontSize: 'clamp(2.8rem, 10vw, 7rem)',
             fontWeight: 800,
-            fontFamily: "'Syne', sans-serif",
-            color: '#ffffff',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.05,
-            marginBottom: '0.5rem',
+            fontFamily: "'Bricolage Grotesque', sans-serif",
+            letterSpacing: '-0.025em',
+            lineHeight: 1.0,
+            marginBottom: '0.4rem',
           }}
         >
-          Rohith
+          <AnimatedWord word={FIRST} startDelay={0} />
           <br />
-          <span className="gradient-text">Dharavathu</span>
-        </motion.h1>
+          <span className="gradient-text">
+            <AnimatedWord word={LAST} startDelay={FIRST.length + 2} />
+          </span>
+        </h1>
 
         {/* Rotating subtitle */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="flex items-center gap-3 mb-6"
-          style={{ height: '2.5rem' }}
+          transition={{ delay: 1.1 }}
+          className="flex items-center justify-center gap-3 mb-6 mt-3"
+          style={{ height: '2.2rem' }}
         >
-          <span style={{ color: '#404050', fontSize: '1.1rem' }}>—</span>
-          <div style={{ width: '220px', textAlign: 'left' }}>
+          <span style={{ color: '#2a2a3a', fontSize: '1rem' }}>—</span>
+          <div style={{ width: '200px', textAlign: 'center' }}>
             <AnimatePresence mode="wait">
               <motion.span
                 key={subtitleIndex}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.28 }}
                 style={{
-                  fontFamily: "'Syne', sans-serif",
-                  fontSize: '1.25rem',
+                  fontFamily: "'Bricolage Grotesque', sans-serif",
+                  fontSize: '1.1rem',
                   fontWeight: 600,
                   color: '#06b6d4',
                   display: 'block',
@@ -106,22 +150,21 @@ export default function Hero() {
               </motion.span>
             </AnimatePresence>
           </div>
-          <span style={{ color: '#404050', fontSize: '1.1rem' }}>—</span>
+          <span style={{ color: '#2a2a3a', fontSize: '1rem' }}>—</span>
         </motion.div>
 
         {/* Pitch */}
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.75 }}
+          transition={{ delay: 1.2 }}
           style={{
-            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            color: '#a0a0b0',
-            maxWidth: '520px',
+            fontSize: 'clamp(1rem, 2.2vw, 1.2rem)',
+            color: '#8888aa',
+            maxWidth: '500px',
             marginBottom: '2.5rem',
-            lineHeight: 1.6,
+            lineHeight: 1.65,
             fontFamily: "'Inter', sans-serif",
-            fontWeight: 400,
           }}
         >
           I build AI systems that think, not just predict.
@@ -131,15 +174,12 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9 }}
+          transition={{ delay: 1.3 }}
           className="flex flex-wrap gap-3 justify-center"
         >
-          <button
-            onClick={() => scrollTo('#projects')}
-            className="btn-primary"
-          >
+          <button onClick={() => scrollTo('#projects')} className="btn-primary">
             View My Work
-            <ArrowDown size={16} />
+            <ArrowDown size={15} />
           </button>
           <button
             onClick={() => { scrollTo('#agent'); openAgent(); }}
@@ -150,19 +190,19 @@ export default function Hero() {
           </button>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Scroll hint */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
+          transition={{ delay: 1.9 }}
           className="absolute bottom-8 flex flex-col items-center gap-2"
-          style={{ color: '#404050' }}
+          style={{ color: '#2a2a40' }}
         >
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
           >
-            <ArrowDown size={16} />
+            <ArrowDown size={15} />
           </motion.div>
         </motion.div>
       </div>

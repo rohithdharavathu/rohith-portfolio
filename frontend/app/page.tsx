@@ -13,6 +13,7 @@ import AgentSection from '@/components/sections/AgentSection';
 import BuiltWithClaude from '@/components/sections/BuiltWithClaude';
 import Contact from '@/components/sections/Contact';
 import ErrorBoundary from '@/components/ui/ErrorBoundary';
+import CustomCursor from '@/components/ui/CustomCursor';
 
 export default function Home() {
   return (
@@ -32,6 +33,7 @@ export default function Home() {
       <Footer />
       <ErrorBoundary><AgentModal /></ErrorBoundary>
       <AgentTrigger />
+      <CustomCursor />
     </AgentProvider>
   );
 }

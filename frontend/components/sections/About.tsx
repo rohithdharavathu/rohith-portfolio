@@ -1,6 +1,5 @@
 'use client';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import StatCard from '@/components/ui/StatCard';
 
@@ -12,45 +11,42 @@ const stats = [
 
 export default function About() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
+
+  const fade = (delay = 0) => ({
+    initial: { opacity: 0, y: 40 },
+    animate: isInView ? { opacity: 1, y: 0 } : {},
+    transition: { duration: 0.7, delay },
+  });
 
   return (
     <section id="about" className="section-padding" ref={ref}>
       <div className="section-container">
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
+        <motion.div {...fade()} >
           <p className="section-label">Who I Am</p>
           <h2 className="section-title">About Me</h2>
           <div className="divider" />
         </motion.div>
 
         <div className="grid md:grid-cols-5 gap-12 items-start mt-8">
-          {/* Photo */}
+          {/* Left — avatar + stats */}
           <motion.div
-            initial={{ opacity: 0, x: -32 }}
+            initial={{ opacity: 0, x: -40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.15 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
             className="md:col-span-2 flex flex-col items-center md:items-start gap-6"
           >
-            <div className="relative">
-              <div
-                className="w-48 h-48 rounded-full"
-                style={{
-                  background: 'linear-gradient(135deg, #3b82f6, #06b6d4, #8b5cf6)',
-                  padding: '3px',
-                }}
-              >
+            {/* Animated ring avatar */}
+            <div className="avatar-ring-outer">
+              <div className="avatar-inner">
                 <div
-                  className="w-full h-full rounded-full flex items-center justify-center"
+                  className="w-44 h-44 rounded-full flex items-center justify-center"
                   style={{
-                    background: '#1a1a24',
-                    fontSize: '3.5rem',
-                    fontFamily: "'Syne', sans-serif",
+                    background: '#0f0f1a',
+                    fontSize: '3rem',
+                    fontFamily: "'Bricolage Grotesque', sans-serif",
                     fontWeight: 800,
-                    color: '#3b82f6',
+                    color: '#7c3aed',
                   }}
                 >
                   RD
@@ -58,14 +54,13 @@ export default function About() {
               </div>
             </div>
 
-            {/* Stat cards */}
             <div className="grid grid-cols-1 gap-3 w-full">
               {stats.map((stat, i) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, y: 16 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.3 + i * 0.1 }}
+                  transition={{ delay: 0.35 + i * 0.1 }}
                 >
                   <StatCard {...stat} />
                 </motion.div>
@@ -73,32 +68,37 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Story */}
+          {/* Right — story */}
           <motion.div
-            initial={{ opacity: 0, x: 32 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.22 }}
             className="md:col-span-3"
           >
-            <div className="flex flex-col gap-5" style={{ color: '#c0c0d0', fontFamily: "'Inter', sans-serif", lineHeight: 1.75 }}>
+            <div className="flex flex-col gap-5" style={{ color: '#8888aa', fontFamily: "'Inter', sans-serif", lineHeight: 1.8 }}>
               <p>
-                I&apos;m a Data Scientist at <span style={{ color: '#f0f0f0', fontWeight: 500 }}>HDFC Bank</span> working on the WhatsApp Banking & Digital Journeys team — building ML segmentation models, fraud detection systems, and data-driven pipelines that reach 10M+ monthly active users. I graduated from <span style={{ color: '#f0f0f0', fontWeight: 500 }}>Amrita Vishwa Vidyapeetham</span> with a B.Tech in Computer Science specializing in Artificial Intelligence.
+                I&apos;m a Data Scientist at{' '}
+                <span style={{ color: '#f8f8ff', fontWeight: 500 }}>HDFC Bank</span> on the WhatsApp Banking & Digital Journeys team — building ML segmentation models, fraud detection systems, and data-driven pipelines reaching{' '}
+                <span style={{ color: '#a78bfa', fontWeight: 500 }}>10M+ monthly active users</span>. I graduated from{' '}
+                <span style={{ color: '#f8f8ff', fontWeight: 500 }}>Amrita Vishwa Vidyapeetham</span> with a B.Tech in Computer Science specializing in AI.
               </p>
               <p>
-                Before HDFC, I was at <span style={{ color: '#f0f0f0', fontWeight: 500 }}>Trianz</span> as a Software Product Engineer working across infrastructure, DevOps, and AI. Outside of work I built an Agentic AI adaptive learning system that won an internal hackathon — that project sparked my obsession with multi-agent architectures.
+                Before HDFC, I was at{' '}
+                <span style={{ color: '#f8f8ff', fontWeight: 500 }}>Trianz</span> as a Software Product Engineer across infrastructure, DevOps, and AI. Outside work I built an Agentic AI adaptive learning system that won an internal hackathon — that project sparked my obsession with multi-agent architectures.
               </p>
               <p>
-                I&apos;ve published <span style={{ color: '#06b6d4', fontWeight: 500 }}>three peer-reviewed papers</span> at IEEE and Springer conferences. My research spans NLP, computer vision, and applied ML. I believe the gap between a published model and a production system is where most interesting engineering happens.
+                I&apos;ve published{' '}
+                <span style={{ color: '#06b6d4', fontWeight: 500 }}>three peer-reviewed papers</span> at IEEE and Springer. I believe the gap between a published model and a production system is where the most interesting engineering happens.
               </p>
               <p>
-                Right now, I&apos;m building <span style={{ color: '#3b82f6', fontWeight: 500 }}>CodeSage AI</span> — a GitHub-native codebase intelligence system that creates a live knowledge graph of any codebase using AST parsing and logical tree retrieval. No vector databases. No brute-force embedding search. Just structured reasoning over code.
+                Right now I&apos;m building{' '}
+                <span style={{ color: '#a78bfa', fontWeight: 500 }}>CodeSage AI</span> — a GitHub-native codebase intelligence system with a live knowledge graph using AST parsing and logical tree retrieval. No vector databases. Just structured reasoning over code.
               </p>
-              <p style={{ color: '#a0a0b0', fontSize: '0.95rem' }}>
-                I have a bias for <em style={{ color: '#c0c0d0' }}>doing over planning</em>. The best way to understand a system is to build one.
+              <p style={{ color: '#44445a', fontSize: '0.92rem' }}>
+                Bias for <em style={{ color: '#6666aa', fontStyle: 'italic' }}>doing over planning</em>. The best way to understand a system is to build one.
               </p>
             </div>
 
-            {/* Links */}
             <div className="flex flex-wrap gap-3 mt-8">
               {[
                 { label: 'GitHub', href: 'https://github.com/rohithdharavathu' },
