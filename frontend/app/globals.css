@@ -281,24 +281,41 @@ code, pre, .mono {
   flex-shrink: 0;
 }
 
-/* ── Rotating gradient border (AI trigger) ── */
-@keyframes spin-gradient {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* ── Agent trigger glow pulse ── */
+@keyframes trigger-glow-pulse {
+  0%, 100% { box-shadow: 0 0 24px rgba(124,58,237,0.5), 0 8px 32px rgba(0,0,0,0.4); }
+  50% { box-shadow: 0 0 52px rgba(124,58,237,0.82), 0 0 80px rgba(6,182,212,0.3), 0 8px 32px rgba(0,0,0,0.4); }
+}
+.trigger-glow-pulse {
+  animation: trigger-glow-pulse 2s ease-in-out infinite;
 }
 
-.rotating-border {
-  position: relative;
+/* ── Agent chat panel (floating, responsive) ── */
+.agent-chat-panel {
+  position: fixed;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  background: #0f0f1a;
+  border: 1px solid rgba(124,58,237,0.3);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 40px rgba(124,58,237,0.15);
 }
 
-.rotating-border::before {
-  content: '';
-  position: absolute;
-  inset: -1.5px;
-  border-radius: 18px;
-  background: conic-gradient(from 0deg, #7c3aed, #06b6d4, #7c3aed);
-  animation: spin-gradient 3s linear infinite;
-  z-index: -1;
+@media (min-width: 640px) {
+  .agent-chat-panel {
+    width: 380px;
+    height: 520px;
+    bottom: 100px;
+    right: 32px;
+    top: auto;
+    left: auto;
+    border-radius: 20px;
+  }
 }
 
 /* ── Typing cursor ── */

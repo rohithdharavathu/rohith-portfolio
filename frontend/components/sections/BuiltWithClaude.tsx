@@ -124,7 +124,9 @@ export default function BuiltWithClaude() {
           className="text-center"
         >
           <a
-            href="#"
+            href="https://www.linkedin.com/in/rohith-dharavathu"
+            target="_blank"
+            rel="noopener noreferrer"
             className="btn-secondary"
             style={{ display: 'inline-flex' }}
           >

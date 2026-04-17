@@ -5,25 +5,25 @@ import { ExternalLink } from 'lucide-react';
 
 const publications = [
   {
-    title: 'Deep Learning-Based Approaches for Text Classification in NLP: A Comparative Study',
-    venue: 'IEEE International Conference on Electronics, Computing and Communication Technologies',
-    year: '2023',
-    type: 'IEEE',
-    link: '#',
-  },
-  {
-    title: 'Intelligent Adaptive Learning Systems Using Reinforcement Learning and Knowledge Graphs',
-    venue: 'Springer International Conference on Intelligent Computing and Applications',
-    year: '2023',
-    type: 'Springer',
-    link: '#',
-  },
-  {
-    title: 'Conversational AI for Financial Services: Intent Recognition and Slot Filling with Transformer Models',
-    venue: 'IEEE Conference on Computational Intelligence and Applications',
+    title: 'Detection of Mental Illness from Social Media Text',
+    venue: 'IEEE International Conference on Control, Communication, Computing & Networking (ICCCNT)',
     year: '2024',
     type: 'IEEE',
-    link: '#',
+    link: 'https://ieeexplore.ieee.org/search/searchresult.jsp?queryText=Detection+Mental+Illness+Social+Media+ICCCNT+2024',
+  },
+  {
+    title: 'Empirical Comparative Study of ML Algorithms for Telugu News Classification',
+    venue: 'Springer International Conference on Advanced Computing, Electronics and Communication Systems (ICACECS)',
+    year: '2023',
+    type: 'Springer',
+    link: 'https://link.springer.com/search?query=Telugu+News+Classification+ICACECS+2023',
+  },
+  {
+    title: 'Comparative Analysis of Speech Synthesis Models',
+    venue: 'IEEE Symposium Series on Computational Intelligence (SSCI)',
+    year: '2023',
+    type: 'IEEE',
+    link: 'https://ieeexplore.ieee.org/search/searchresult.jsp?queryText=Comparative+Analysis+Speech+Synthesis+SSCI+2023',
   },
 ];
 
@@ -74,62 +74,39 @@ export default function Publications() {
                       padding: '10px 0',
                     }}
                   >
-                    <span
-                      style={{
-                        fontFamily: "'Bricolage Grotesque', sans-serif",
-                        fontSize: '1.1rem',
-                        fontWeight: 800,
-                        color: '#7c3aed',
-                        lineHeight: 1,
-                      }}
-                    >
+                    <span style={{
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                      fontSize: '1.1rem', fontWeight: 800, color: '#7c3aed', lineHeight: 1,
+                    }}>
                       {pub.year}
                     </span>
                   </div>
 
                   <div className="flex-1 min-w-0">
                     {/* Badge */}
-                    <span
-                      style={{
-                        display: 'inline-block',
-                        background: tc.bg,
-                        border: `1px solid ${tc.border}`,
-                        color: tc.color,
-                        fontFamily: "'DM Mono', monospace",
-                        fontSize: '0.65rem',
-                        fontWeight: 600,
-                        letterSpacing: '0.08em',
-                        textTransform: 'uppercase' as const,
-                        padding: '3px 10px',
-                        borderRadius: '999px',
-                        marginBottom: '10px',
-                      }}
-                    >
+                    <span style={{
+                      display: 'inline-block',
+                      background: tc.bg, border: `1px solid ${tc.border}`, color: tc.color,
+                      fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', fontWeight: 600,
+                      letterSpacing: '0.08em', textTransform: 'uppercase' as const,
+                      padding: '3px 10px', borderRadius: '999px', marginBottom: '10px',
+                    }}>
                       {pub.type}
                     </span>
 
-                    <h3
-                      style={{
-                        fontFamily: "'Bricolage Grotesque', sans-serif",
-                        fontSize: '1rem',
-                        fontWeight: 600,
-                        color: '#f8f8ff',
-                        lineHeight: 1.45,
-                        marginBottom: '0.5rem',
-                      }}
-                    >
+                    <h3 style={{
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                      fontSize: '1rem', fontWeight: 600, color: '#f8f8ff',
+                      lineHeight: 1.45, marginBottom: '0.5rem',
+                    }}>
                       {pub.title}
                     </h3>
 
-                    <p
-                      style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontSize: '0.82rem',
-                        color: '#8888aa',
-                        marginBottom: '14px',
-                        lineHeight: 1.5,
-                      }}
-                    >
+                    <p style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontSize: '0.82rem', color: '#8888aa',
+                      marginBottom: '14px', lineHeight: 1.5,
+                    }}>
                       {pub.venue}
                     </p>
 
@@ -139,12 +116,9 @@ export default function Publications() {
                       rel="noopener noreferrer"
                       className="flex items-center gap-1.5"
                       style={{
-                        fontSize: '0.78rem',
-                        color: '#44445a',
-                        textDecoration: 'none',
-                        fontFamily: "'Inter', sans-serif",
-                        transition: 'color 0.2s',
-                        width: 'fit-content',
+                        fontSize: '0.78rem', color: '#44445a',
+                        textDecoration: 'none', fontFamily: "'Inter', sans-serif",
+                        transition: 'color 0.2s', width: 'fit-content',
                       }}
                       onMouseEnter={(e) => ((e.currentTarget).style.color = '#8888aa')}
                       onMouseLeave={(e) => ((e.currentTarget).style.color = '#44445a')}

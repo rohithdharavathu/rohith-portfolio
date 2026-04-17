@@ -19,7 +19,7 @@ const letterVariants = {
   }),
 };
 
-function AnimatedWord({ word, startDelay = 0 }: { word: string; startDelay?: number }) {
+function AnimatedWord({ word, startDelay = 0, color }: { word: string; startDelay?: number; color?: string }) {
   return (
     <span style={{ display: 'inline-block' }}>
       {word.split('').map((ch, i) => (
@@ -29,7 +29,7 @@ function AnimatedWord({ word, startDelay = 0 }: { word: string; startDelay?: num
           variants={letterVariants}
           initial="hidden"
           animate="visible"
-          style={{ display: 'inline-block', whiteSpace: 'pre' }}
+          style={{ display: 'inline-block', whiteSpace: 'pre', ...(color ? { color } : {}) }}
         >
           {ch}
         </motion.span>
@@ -116,9 +116,7 @@ export default function Hero() {
         >
           <AnimatedWord word={FIRST} startDelay={0} />
           <br />
-          <span className="gradient-text">
-            <AnimatedWord word={LAST} startDelay={FIRST.length + 2} />
-          </span>
+          <AnimatedWord word={LAST} startDelay={FIRST.length + 2} color="#c4b5fd" />
         </h1>
 
         {/* Rotating subtitle */}

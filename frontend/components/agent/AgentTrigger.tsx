@@ -5,65 +5,95 @@ import { useAgent } from './AgentContext';
 
 export default function AgentTrigger() {
   const [visible, setVisible] = useState(false);
-  const [hasAppeared, setHasAppeared] = useState(false);
-  const { openAgent } = useAgent();
+  const [glowing, setGlowing] = useState(false);
+  const { openAgent, isOpen } = useAgent();
 
   useEffect(() => {
     const handler = () => {
-      if (window.scrollY > window.innerHeight * 0.6 && !hasAppeared) {
+      if (window.scrollY > window.innerHeight * 0.6 && !visible) {
         setVisible(true);
-        setHasAppeared(true);
       }
     };
     window.addEventListener('scroll', handler);
     return () => window.removeEventListener('scroll', handler);
-  }, [hasAppeared]);
+  }, [visible]);
+
+  useEffect(() => {
+    if (visible) {
+      const t = setTimeout(() => setGlowing(true), 900);
+      return () => clearTimeout(t);
+    }
+  }, [visible]);
 
   return (
     <AnimatePresence>
-      {visible && (
+      {visible && !isOpen && (
         <motion.button
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 80 }}
-          transition={{ type: 'spring', damping: 20, stiffness: 260 }}
+          exit={{ opacity: 0, y: 80, transition: { duration: 0.2 } }}
+          transition={{ type: 'spring', damping: 12, stiffness: 280 }}
           onClick={() => openAgent()}
-          className="rotating-border fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl cursor-pointer"
+          className={glowing ? 'trigger-glow-pulse' : ''}
           style={{
-            background: '#111118',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-            minWidth: '180px',
+            position: 'fixed',
+            bottom: '32px',
+            right: '32px',
+            zIndex: 50,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            width: '180px',
+            height: '56px',
+            padding: '0 18px',
+            borderRadius: '28px',
+            background: 'linear-gradient(135deg, #7c3aed, #06b6d4)',
+            border: 'none',
+            cursor: 'pointer',
+            boxShadow: glowing ? undefined : '0 0 24px rgba(124,58,237,0.5), 0 8px 32px rgba(0,0,0,0.4)',
           }}
-          whileHover={{ scale: 1.03, boxShadow: '0 12px 40px rgba(0,0,0,0.5), 0 0 24px rgba(124,58,237,0.2)' }}
-          whileTap={{ scale: 0.97 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
         >
+          {/* Avatar */}
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #7c3aed, #06b6d4)' }}
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              fontSize: '0.7rem',
+              fontWeight: 800,
+              color: 'white',
+              fontFamily: "'Bricolage Grotesque', sans-serif",
+            }}
           >
-            <span style={{ fontSize: '0.65rem', fontWeight: 700, color: 'white' }}>AI</span>
+            RD
           </div>
-          <div className="text-left">
-            <p
-              style={{
-                fontFamily: "'Bricolage Grotesque', sans-serif",
-                fontSize: '0.8rem',
-                fontWeight: 700,
-                color: '#f8f8ff',
-                lineHeight: 1.2,
-              }}
-            >
+
+          {/* Text */}
+          <div style={{ textAlign: 'left', flex: 1 }}>
+            <p style={{
+              fontFamily: "'Bricolage Grotesque', sans-serif",
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              color: 'white',
+              lineHeight: 1.2,
+              whiteSpace: 'nowrap',
+            }}>
               Ask Rohith&apos;s AI
             </p>
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="pulse-dot" style={{ width: '5px', height: '5px' }} />
-              <span
-                style={{
-                  fontFamily: "'DM Mono', monospace",
-                  fontSize: '0.65rem',
-                  color: '#22c55e',
-                }}
-              >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginTop: '2px' }}>
+              <span className="pulse-dot" style={{ width: '5px', height: '5px', background: '#a7f3d0' }} />
+              <span style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: '0.62rem',
+                color: 'rgba(255,255,255,0.75)',
+              }}>
                 Online
               </span>
             </div>

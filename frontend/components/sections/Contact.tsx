@@ -31,7 +31,7 @@ export default function Contact() {
 
   const links = [
     { icon: Mail, label: 'Email', href: 'mailto:rohith.dharavathu.112@gmail.com', value: 'rohith.dharavathu.112@gmail.com', color: '#7c3aed' },
-    { icon: Link2, label: 'LinkedIn', href: '#', value: 'linkedin.com/in/rohithreddy', color: '#06b6d4' },
+    { icon: Link2, label: 'LinkedIn', href: 'https://www.linkedin.com/in/rohith-dharavathu', value: 'linkedin.com/in/rohith-dharavathu', color: '#06b6d4' },
     { icon: GitBranch, label: 'GitHub', href: 'https://github.com/rohithdharavathu', value: 'github.com/rohithdharavathu', color: '#8b5cf6' },
   ];
 
