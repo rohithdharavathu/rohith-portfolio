@@ -15,7 +15,7 @@ export default function Footer() {
             color: '#606070',
           }}
         >
-          © 2025 Rohith Dharavathu
+          © 2026 Rohith Dharavathu
         </div>
         <div
           style={{
