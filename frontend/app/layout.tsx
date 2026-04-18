@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Rohith Dharavathu — Data Scientist & GenAI Builder",
-  description: "Data Scientist at HDFC Bank. ML, NLP, GenAI. Building CodeSage AI — GitHub-native codebase intelligence. 3 IEEE/Springer publications.",
+  title: "Rohith Dharavathu — AI/ML Engineer & GenAI Architect",
+  description: "AI/ML Engineer specializing in GenAI systems, LLM orchestration, and agentic architectures. This portfolio features a live AI agent built with logical tree routing, persona engineering, and zero vector DB — architected by Rohith, implemented with Claude Code.",
   openGraph: {
-    title: "Rohith Dharavathu — Data Scientist & GenAI Builder",
-    description: "Data Scientist at HDFC Bank. ML, NLP, GenAI. Building CodeSage AI.",
+    title: "Rohith Dharavathu — AI/ML Engineer & GenAI Architect",
+    description: "AI/ML Engineer specializing in GenAI systems, LLM orchestration, and agentic architectures. This portfolio features a live AI agent built with logical tree routing, persona engineering, and zero vector DB — architected by Rohith, implemented with Claude Code.",
     type: "website",
     url: "https://rohithdharavathu.dev",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rohith Dharavathu — Data Scientist & GenAI Builder",
-    description: "Data Scientist at HDFC Bank. ML, NLP, GenAI. Building CodeSage AI.",
+    title: "Rohith Dharavathu — AI/ML Engineer & GenAI Architect",
+    description: "AI/ML Engineer specializing in GenAI systems, LLM orchestration, and agentic architectures. This portfolio features a live AI agent built with logical tree routing, persona engineering, and zero vector DB — architected by Rohith, implemented with Claude Code.",
   },
   robots: "index, follow",
 };

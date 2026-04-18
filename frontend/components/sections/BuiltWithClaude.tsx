@@ -2,19 +2,27 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 
-const points = [
-  'Every component was generated through natural language prompts — no manual frontend coding.',
-  'The AI agent architecture (two-call logical tree routing) was designed and implemented entirely in Claude Code.',
-  'Content lives in markdown files in a private GitHub repo — update the markdown, update the AI.',
-  "The meta-point: this portfolio demonstrates exactly the kind of AI-native systems Rohith builds professionally.",
-];
-
-const flowNodes = [
-  { label: 'brain/', sublabel: 'Markdown files', color: '#8b5cf6' },
-  { label: 'GitHub API', sublabel: 'Content delivery', color: '#7c3aed' },
-  { label: 'FastAPI', sublabel: 'Backend router', color: '#06b6d4' },
-  { label: 'Claude API', sublabel: 'Two-call agent', color: '#22c55e' },
-  { label: 'Next.js', sublabel: 'Frontend', color: '#f59e0b' },
+const cards = [
+  {
+    title: 'Logical Tree RAG',
+    body: 'Rejected vector databases on first principles. Structured routing is faster, cheaper, and more accurate for known-schema content.',
+    color: '#8b5cf6',
+  },
+  {
+    title: 'Two-Call Agent Architecture',
+    body: 'Intent router and persona synthesizer as separate concerns. Testable, debuggable, replaceable by design.',
+    color: '#7c3aed',
+  },
+  {
+    title: 'Prompt Engineering as Product',
+    body: 'The router and persona prompts required more engineering judgment than any code in the system.',
+    color: '#06b6d4',
+  },
+  {
+    title: 'GitHub as Content Layer',
+    body: 'No CMS. No database. Markdown + git push = live update. The simplest architecture that works.',
+    color: '#22c55e',
+  },
 ];
 
 export default function BuiltWithClaude() {
@@ -39,79 +47,57 @@ export default function BuiltWithClaude() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="section-label">Meta</p>
-          <h2 className="section-title">This site was built entirely with Claude Code.</h2>
+          <p className="section-label">META</p>
+          <h2 className="section-title">This site is the proof of concept.</h2>
           <p
             style={{
               fontFamily: "'Inter', sans-serif",
               fontSize: '1rem',
               color: '#8888aa',
-              maxWidth: '480px',
+              maxWidth: '520px',
               margin: '0 auto',
+              lineHeight: 1.7,
             }}
           >
-            No manual frontend code. Just intent, prompts, and vibe coding.
+            Every architectural decision was made by a human engineer.
+            <br />
+            Claude Code handled the implementation.
+            <br />
+            <span style={{ color: '#c4b5fd', fontWeight: 600 }}>That&apos;s the skill.</span>
           </p>
         </motion.div>
 
-        {/* Architecture diagram */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="flex flex-wrap items-center justify-center gap-2 mb-12"
-        >
-          {flowNodes.map((node, i) => (
-            <div key={node.label} className="flex items-center gap-2">
-              <div
-                className="px-4 py-3 rounded-xl text-center"
-                style={{
-                  background: `${node.color}10`,
-                  border: `1px solid ${node.color}30`,
-                  minWidth: '100px',
-                }}
-              >
-                <p
-                  style={{
-                    fontFamily: "'DM Mono', monospace",
-                    fontSize: '0.78rem',
-                    fontWeight: 600,
-                    color: node.color,
-                    marginBottom: '0.2rem',
-                  }}
-                >
-                  {node.label}
-                </p>
-                <p style={{ fontSize: '0.65rem', color: '#44445a', fontFamily: "'Inter', sans-serif" }}>
-                  {node.sublabel}
-                </p>
-              </div>
-              {i < flowNodes.length - 1 && (
-                <span style={{ color: '#333344', fontSize: '0.9rem' }}>→</span>
-              )}
-            </div>
-          ))}
-        </motion.div>
-
-        {/* Points */}
+        {/* Cards */}
         <div className="grid md:grid-cols-2 gap-4 max-w-3xl mx-auto mb-10">
-          {points.map((point, i) => (
+          {cards.map((card, i) => (
             <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 16 }}
+              key={card.title}
+              initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.2 + i * 0.08 }}
-              className="flex gap-3"
+              transition={{ duration: 0.45, delay: 0.15 + i * 0.09 }}
               style={{
-                padding: '1rem 1.25rem',
-                background: 'rgba(124,58,237,0.04)',
-                border: '1px solid rgba(124,58,237,0.12)',
-                borderRadius: '10px',
+                padding: '20px 24px',
+                background: `${card.color}08`,
+                border: `1px solid ${card.color}22`,
+                borderRadius: '12px',
               }}
             >
-              <span style={{ color: '#7c3aed', flexShrink: 0, marginTop: '2px' }}>▸</span>
-              <p style={{ fontSize: '0.875rem', color: '#c0c0d0', fontFamily: "'Inter', sans-serif", lineHeight: 1.6 }}>
-                {point}
+              <p style={{
+                fontFamily: "'Bricolage Grotesque', sans-serif",
+                fontSize: '0.95rem',
+                fontWeight: 700,
+                color: card.color,
+                marginBottom: '8px',
+              }}>
+                {card.title}
+              </p>
+              <p style={{
+                fontSize: '0.875rem',
+                color: '#8888aa',
+                fontFamily: "'Inter', sans-serif",
+                lineHeight: 1.65,
+              }}>
+                {card.body}
               </p>
             </motion.div>
           ))}
@@ -120,7 +106,7 @@ export default function BuiltWithClaude() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.55 }}
           className="text-center"
         >
           <a
@@ -130,7 +116,7 @@ export default function BuiltWithClaude() {
             className="btn-secondary"
             style={{ display: 'inline-flex' }}
           >
-            Read the build thread on LinkedIn →
+            Read the architecture breakdown on LinkedIn →
           </a>
         </motion.div>
       </div>
