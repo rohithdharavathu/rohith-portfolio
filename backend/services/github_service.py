@@ -5,6 +5,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+VALID_NODES = {
+    "about", "resume", "skills", "publications",
+    "experience/hdfc", "experience/trianz",
+    "projects/codesage", "projects/nl-to-sql",
+    "projects/agentic-learning", "projects/portfolio",
+}
+
 
 async def fetch_node(node_path: str) -> str:
     """
