@@ -1,91 +1,78 @@
+import httpx
+import base64
 import os
 import logging
-import asyncio
-import httpx
 
 logger = logging.getLogger(__name__)
 
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
-GITHUB_BRAIN_REPO = os.getenv("GITHUB_BRAIN_REPO", "rohithdharavathu/rohith-brain")
-GITHUB_BRAIN_BRANCH = os.getenv("GITHUB_BRAIN_BRANCH", "main")
 
-VALID_NODES = {
-    "about", "resume", "skills", "publications",
-    "experience/hdfc", "experience/trianz",
-    "projects/codesage", "projects/nl-to-sql",
-    "projects/agentic-learning", "projects/portfolio",
-}
+async def fetch_node(node_path: str) -> str:
+    """
+    Fetch a markdown file from the private brain repo.
+    node_path: e.g. "about", "experience/hdfc", "projects/codesage"
+    """
+    token = os.getenv("GITHUB_TOKEN", "")
+    repo = os.getenv("GITHUB_BRAIN_REPO", "")
+    branch = os.getenv("GITHUB_BRAIN_BRANCH", "main")
 
+    if not token or not repo:
+        raise Exception("Missing GITHUB_TOKEN or GITHUB_BRAIN_REPO env vars")
 
-async def _fetch_once(client: httpx.AsyncClient, node_path: str) -> str:
-    url = f"https://api.github.com/repos/{GITHUB_BRAIN_REPO}/contents/{node_path}.md"
+    file_path = f"{node_path}.md"
+    url = f"https://api.github.com/repos/{repo}/contents/{file_path}"
+
     headers = {
-        "Accept": "application/vnd.github.v3.raw",
-        "User-Agent": "rohith-portfolio-backend",
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "rohith-portfolio-agent",
     }
-    if GITHUB_TOKEN:
-        headers["Authorization"] = f"token {GITHUB_TOKEN}"
-    else:
-        logger.warning("GITHUB_TOKEN not set — fetching public content only")
 
-    logger.info(f"[GitHub] Fetching: {url}")
-    response = await client.get(url, headers=headers)
-    logger.info(f"[GitHub] {node_path} → HTTP {response.status_code}")
-
-    if response.status_code == 200:
-        content = response.text
-        logger.info(f"[GitHub] {node_path} → {len(content)} chars fetched")
-        return content
-    elif response.status_code == 404:
-        logger.error(f"[GitHub] {node_path}.md NOT FOUND in {GITHUB_BRAIN_REPO} — check file exists")
-        return ""
-    elif response.status_code == 401:
-        logger.error(f"[GitHub] 401 Unauthorized — GITHUB_TOKEN is invalid or missing")
-        return ""
-    else:
-        logger.error(f"[GitHub] {node_path} unexpected status {response.status_code}: {response.text[:200]}")
-        return ""
-
-
-async def fetch_markdown(node_path: str) -> str:
-    if node_path not in VALID_NODES:
-        logger.warning(f"[GitHub] Node '{node_path}' not in VALID_NODES — skipping")
-        return ""
+    params = {"ref": branch}
 
     try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            content = await _fetch_once(client, node_path)
-            if not content:
-                # One retry
-                logger.info(f"[GitHub] Retrying {node_path}...")
-                await asyncio.sleep(0.5)
-                content = await _fetch_once(client, node_path)
-            return content
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            response = await client.get(url, headers=headers, params=params)
+
+            logger.info(f"GitHub fetch {file_path}: status={response.status_code}")
+
+            if response.status_code == 200:
+                data = response.json()
+                content_b64 = data.get("content", "")
+                content_b64 = content_b64.replace("\n", "")
+                content = base64.b64decode(content_b64).decode("utf-8")
+                logger.info(f"Fetched {file_path}: {len(content)} chars")
+                return content
+            elif response.status_code == 404:
+                logger.error(f"File not found: {file_path}")
+                raise Exception(f"File not found: {file_path}")
+            elif response.status_code == 401:
+                logger.error("GitHub token unauthorized")
+                raise Exception("GitHub token unauthorized")
+            else:
+                logger.error(f"GitHub error {response.status_code}: {response.text[:300]}")
+                raise Exception(f"GitHub fetch failed: {response.status_code}")
+
     except httpx.TimeoutException:
-        logger.error(f"[GitHub] Timeout fetching {node_path}")
-        return ""
-    except Exception as e:
-        logger.error(f"[GitHub] Exception fetching {node_path}: {e}")
-        return ""
+        logger.error(f"Timeout fetching {file_path}")
+        raise Exception(f"Timeout fetching {file_path}")
 
 
-async def fetch_multiple(nodes: list[str]) -> dict[str, str]:
-    logger.info(f"[GitHub] Fetching nodes: {nodes}")
-    tasks = [fetch_markdown(node) for node in nodes]
-    results = await asyncio.gather(*tasks, return_exceptions=True)
+async def fetch_multiple_nodes(nodes: list[str]) -> dict[str, str]:
+    """
+    Fetch multiple nodes concurrently. Continues even if some fail.
+    Returns dict of {node_path: content} — only includes successful fetches.
+    """
+    import asyncio
+    results: dict[str, str] = {}
 
-    out: dict[str, str] = {}
-    for node, result in zip(nodes, results):
-        if isinstance(result, Exception):
-            logger.error(f"[GitHub] Exception for node '{node}': {result}")
-            out[node] = ""
-        else:
-            out[node] = result or ""
+    async def fetch_one(node: str) -> None:
+        try:
+            content = await fetch_node(node)
+            results[node] = content
+        except Exception as e:
+            logger.error(f"Failed to fetch node '{node}': {e}")
 
-    fetched = [n for n, v in out.items() if v]
-    empty = [n for n, v in out.items() if not v]
-    logger.info(f"[GitHub] Successfully fetched: {fetched}")
-    if empty:
-        logger.warning(f"[GitHub] Empty/failed nodes: {empty}")
-
-    return out
+    await asyncio.gather(*[fetch_one(node) for node in nodes])
+    logger.info(f"Fetched {len(results)}/{len(nodes)} nodes successfully: {list(results.keys())}")
+    return results

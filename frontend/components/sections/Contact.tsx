@@ -1,7 +1,7 @@
 'use client';
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { GitBranch, Link2, Mail, Send } from 'lucide-react';
+import { GitBranch, Link2, Mail, Phone, Send } from 'lucide-react';
 
 export default function Contact() {
   const ref = useRef(null);
@@ -30,9 +30,10 @@ export default function Contact() {
   };
 
   const links = [
-    { icon: Mail, label: 'Email', href: 'mailto:rohith.dharavathu.112@gmail.com', value: 'rohith.dharavathu.112@gmail.com', color: '#7c3aed' },
-    { icon: Link2, label: 'LinkedIn', href: 'https://www.linkedin.com/in/rohith-dharavathu', value: 'linkedin.com/in/rohith-dharavathu', color: '#06b6d4' },
-    { icon: GitBranch, label: 'GitHub', href: 'https://github.com/rohithdharavathu', value: 'github.com/rohithdharavathu', color: '#8b5cf6' },
+    { icon: Mail,      label: 'Email',            href: 'mailto:rohith.dharavathu.112@gmail.com', value: 'rohith.dharavathu.112@gmail.com',   color: '#7c3aed' },
+    { icon: Phone,     label: 'Phone / WhatsApp',  href: 'tel:+919705816112',                      value: '+91 9705816112',                     color: '#22c55e' },
+    { icon: Link2,     label: 'LinkedIn',          href: 'https://www.linkedin.com/in/rohith-dharavathu', value: 'linkedin.com/in/rohith-dharavathu', color: '#06b6d4' },
+    { icon: GitBranch, label: 'GitHub',            href: 'https://github.com/rohithdharavathu',    value: 'github.com/rohithdharavathu',        color: '#8b5cf6' },
   ];
 
   return (
@@ -47,14 +48,7 @@ export default function Contact() {
           <p className="section-label">Get In Touch</p>
           <h2 className="section-title">Contact</h2>
           <div className="divider mx-auto" />
-          <p
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              color: '#8888aa',
-              marginTop: '1rem',
-              fontSize: '1rem',
-            }}
-          >
+          <p style={{ fontFamily: "'Inter', sans-serif", color: '#8888aa', marginTop: '1rem', fontSize: '1rem' }}>
             Always open to interesting problems.
           </p>
         </motion.div>
@@ -65,7 +59,7 @@ export default function Contact() {
             initial={{ opacity: 0, x: -24 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-3"
           >
             {links.map(({ icon: Icon, label, href, value, color }) => (
               <a
@@ -74,19 +68,19 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="card-base flex items-center gap-4 group"
-                style={{ textDecoration: 'none', padding: '20px 24px' }}
+                style={{ textDecoration: 'none', padding: '18px 22px' }}
               >
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 group-hover:scale-110"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-200 group-hover:scale-110"
                   style={{ background: `${color}12`, border: `1px solid ${color}30` }}
                 >
-                  <Icon size={18} style={{ color }} />
+                  <Icon size={17} style={{ color }} />
                 </div>
                 <div>
-                  <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: '0.9rem', fontWeight: 600, color: '#f8f8ff', marginBottom: '0.15rem' }}>
+                  <p style={{ fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: '0.88rem', fontWeight: 600, color: '#f8f8ff', marginBottom: '0.1rem' }}>
                     {label}
                   </p>
-                  <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.72rem', color: '#44445a' }}>
+                  <p style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.7rem', color: '#44445a' }}>
                     {value}
                   </p>
                 </div>

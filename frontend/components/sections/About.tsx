@@ -84,7 +84,7 @@ export default function About() {
               </p>
               <p>
                 Before HDFC, I was at{' '}
-                <span style={{ color: '#f8f8ff', fontWeight: 500 }}>Trianz</span> as a Software Product Engineer across infrastructure, DevOps, and AI. Outside work I built an Agentic AI adaptive learning system that won an internal hackathon — that project sparked my obsession with multi-agent architectures.
+                <span style={{ color: '#f8f8ff', fontWeight: 500 }}>Trianz</span> as a Product Software Engineer across AI and Cloud. I built an Agentic AI adaptive learning system that won an internal hackathon — that project sparked my obsession with multi-agent architectures.
               </p>
               <p>
                 I&apos;ve published{' '}
@@ -102,8 +102,8 @@ export default function About() {
             <div className="flex flex-wrap gap-3 mt-8">
               {[
                 { label: 'GitHub', href: 'https://github.com/rohithdharavathu' },
-                { label: 'LinkedIn', href: '#' },
-                { label: 'Google Scholar', href: '#' },
+                { label: 'LinkedIn', href: 'https://www.linkedin.com/in/rohith-dharavathu' },
+                { label: 'Google Scholar', href: 'https://scholar.google.com/scholar?q=Rohith+Dharavathu' },
               ].map((link) => (
                 <a
                   key={link.label}

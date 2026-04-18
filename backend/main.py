@@ -79,4 +79,23 @@ app.include_router(content.router, prefix="/content", tags=["content"])
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "service": "rohith-portfolio-api"}
+    return {
+        "status": "ok",
+        "service": "rohith-portfolio-api",
+        "env_check": {
+            "has_anthropic_key": bool(os.getenv("ANTHROPIC_API_KEY")),
+            "has_github_token": bool(os.getenv("GITHUB_TOKEN")),
+            "brain_repo": os.getenv("GITHUB_BRAIN_REPO", "NOT SET"),
+        },
+    }
+
+
+@app.get("/test-brain")
+async def test_brain():
+    """Debug endpoint: fetch about.md and return first 200 chars or error."""
+    from services.github_service import fetch_node
+    try:
+        content = await fetch_node("about")
+        return {"status": "ok", "preview": content[:200], "total_chars": len(content)}
+    except Exception as e:
+        return {"status": "error", "error": str(e)}

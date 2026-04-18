@@ -3,9 +3,9 @@ import json
 import logging
 import re
 from anthropic import AsyncAnthropic
-from .github_service import fetch_multiple
-from prompts.router_prompt import ROUTER_SYSTEM_PROMPT
-from prompts.persona_prompt import PERSONA_SYSTEM_PROMPT
+from .github_service import fetch_multiple_nodes
+from prompts.router_prompt import ROUTER_PROMPT
+from prompts.persona_prompt import PERSONA_PROMPT
 from typing import AsyncGenerator
 
 logger = logging.getLogger(__name__)
@@ -16,8 +16,8 @@ MODEL = "claude-sonnet-4-6"
 DEFAULT_NODES = ["about", "resume"]
 
 FALLBACK_MESSAGE = (
-    "I'm having trouble accessing my knowledge base right now. "
-    "Reach out directly at rohith.dharavathu.112@gmail.com and I'll answer directly."
+    "I'm having trouble reaching my knowledge base right now. "
+    "Reach out directly at rohith.dharavathu.112@gmail.com or +91 9705816112"
 )
 
 
@@ -28,7 +28,7 @@ async def route_query(query: str) -> dict:
         message = await client.messages.create(
             model=MODEL,
             max_tokens=256,
-            system=ROUTER_SYSTEM_PROMPT,
+            system=ROUTER_PROMPT,
             messages=[{"role": "user", "content": query}],
         )
         raw = message.content[0].text.strip()
@@ -42,18 +42,14 @@ async def route_query(query: str) -> dict:
                 result = json.loads(match.group())
                 logger.info(f"[Router] Extracted JSON from text: {result}")
             else:
-                logger.warning(f"[Router] Could not parse JSON — defaulting to {DEFAULT_NODES}")
+                logger.warning("[Router] Could not parse JSON — defaulting")
                 result = {"nodes": DEFAULT_NODES}
 
-        nodes = result.get("nodes", DEFAULT_NODES)
-        deflect = result.get("deflect", False)
-
-        # Fallback: never return empty nodes unless explicitly deflecting
-        if not nodes and not deflect:
-            logger.warning("[Router] Empty nodes returned without deflect — using defaults")
+        if not result.get("nodes") and not result.get("deflect"):
+            logger.warning("[Router] Empty nodes without deflect — using defaults")
             result["nodes"] = DEFAULT_NODES
 
-        logger.info(f"[Router] Final routing → nodes={result.get('nodes')}, deflect={deflect}")
+        logger.info(f"[Router] Final routing → nodes={result.get('nodes')}, deflect={result.get('deflect', False)}")
         return result
 
     except Exception as e:
@@ -70,12 +66,12 @@ async def stream_answer(query: str, knowledge: dict[str, str]) -> AsyncGenerator
     )
 
     if not knowledge_text:
-        logger.error("[Persona] No knowledge content available — all nodes were empty")
+        logger.error("[Persona] No knowledge content available")
         yield FALLBACK_MESSAGE
         return
 
     logger.info(f"[Persona] Knowledge total chars: {len(knowledge_text)}")
-    system = PERSONA_SYSTEM_PROMPT + f"\n\n---\n\nKNOWLEDGE FILES:\n{knowledge_text}"
+    system = PERSONA_PROMPT.replace("{knowledge_content}", knowledge_text)
 
     try:
         async with client.messages.stream(
@@ -86,9 +82,9 @@ async def stream_answer(query: str, knowledge: dict[str, str]) -> AsyncGenerator
         ) as stream:
             async for text in stream.text_stream:
                 yield text
-        logger.info("[Persona] Stream completed successfully")
+        logger.info("[Persona] Stream completed")
     except Exception as e:
-        logger.error(f"[Persona] Claude streaming error: {e}")
+        logger.error(f"[Persona] Streaming error: {e}")
         yield FALLBACK_MESSAGE
 
 
@@ -106,13 +102,10 @@ async def handle_chat(query: str) -> AsyncGenerator[str, None]:
         return
 
     nodes = routing.get("nodes") or DEFAULT_NODES
-    logger.info(f"[Agent] Fetching nodes: {nodes}")
+    knowledge = await fetch_multiple_nodes(nodes)
 
-    knowledge = await fetch_multiple(nodes)
-
-    all_empty = all(not v for v in knowledge.values())
-    if all_empty:
-        logger.error(f"[Agent] All node fetches returned empty for nodes: {nodes}")
+    if not knowledge:
+        logger.error(f"[Agent] All node fetches failed for: {nodes}")
         yield FALLBACK_MESSAGE
         return
 
