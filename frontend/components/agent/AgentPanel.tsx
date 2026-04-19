@@ -25,6 +25,8 @@ export default function AgentPanel() {
   const [demoPlayed, setDemoPlayed] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  // Ref so cancelDemo() can be called synchronously from input handlers
+  const cancelDemoRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -35,6 +37,12 @@ export default function AgentPanel() {
     setDemoPlayed(true);
     setDemoActive(true);
     let cancelled = false;
+
+    cancelDemoRef.current = () => {
+      cancelled = true;
+      setDemoActive(false);
+      setStreamingContent('');
+    };
 
     const play = async () => {
       await new Promise((r) => setTimeout(r, 700));
@@ -51,13 +59,29 @@ export default function AgentPanel() {
       setStreamingContent('');
       setMessages([{ role: 'user', content: DEMO_Q }, { role: 'assistant', content: DEMO_A }]);
       setDemoActive(false);
+      cancelDemoRef.current = null;
     };
     play();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      cancelDemoRef.current = null;
+    };
   }, [demoPlayed]);
 
+  // Cancel demo and clear its messages so the user starts fresh
+  const interruptDemo = useCallback(() => {
+    if (cancelDemoRef.current) {
+      cancelDemoRef.current();
+      cancelDemoRef.current = null;
+      setMessages([]);
+      setStreamingContent('');
+    }
+  }, []);
+
   const sendMessage = useCallback(async (query: string) => {
-    if (!query.trim() || loading || demoActive) return;
+    if (!query.trim() || loading) return;
+    // If demo is still running, cancel it first
+    if (demoActive) interruptDemo();
     setMessages((prev) => [...prev, { role: 'user', content: query }]);
     setInput('');
     setLoading(true);
@@ -69,7 +93,7 @@ export default function AgentPanel() {
       () => { setMessages((prev) => [...prev, { role: 'assistant', content: accumulated }]); setStreamingContent(''); setLoading(false); },
       (err) => { setMessages((prev) => [...prev, { role: 'assistant', content: err }]); setStreamingContent(''); setLoading(false); }
     );
-  }, [loading, demoActive]);
+  }, [loading, demoActive, interruptDemo]);
 
   return (
     <div style={{
@@ -184,15 +208,26 @@ export default function AgentPanel() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
+      {/* Input — never disabled, demo cancels on interaction */}
       <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', padding: '10px 14px', flexShrink: 0 }}>
-        <form onSubmit={(e) => { e.preventDefault(); sendMessage(input); }} style={{ position: 'relative' }}>
+        <form
+          onSubmit={(e) => { e.preventDefault(); sendMessage(input); }}
+          style={{ position: 'relative' }}
+        >
           <input
             ref={inputRef}
             value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={demoActive ? 'Demo playing...' : 'Ask me anything about Rohith...'}
-            disabled={loading || demoActive}
+            onChange={(e) => {
+              if (demoActive) interruptDemo();
+              setInput(e.target.value);
+            }}
+            onFocus={(e) => {
+              if (demoActive) interruptDemo();
+              e.target.style.borderColor = 'rgba(124,58,237,0.5)';
+            }}
+            onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.09)'; }}
+            placeholder="Ask me anything about Rohith..."
+            disabled={loading}
             style={{
               width: '100%', background: '#1a1a2e',
               border: '1px solid rgba(255,255,255,0.09)',
@@ -200,24 +235,22 @@ export default function AgentPanel() {
               color: '#f8f8ff', fontFamily: "'Inter', sans-serif",
               fontSize: '0.85rem', outline: 'none', transition: 'border-color 0.2s',
             }}
-            onFocus={(e) => { e.target.style.borderColor = 'rgba(124,58,237,0.5)'; }}
-            onBlur={(e) => { e.target.style.borderColor = 'rgba(255,255,255,0.09)'; }}
           />
           <button
             type="submit"
-            disabled={!input.trim() || loading || demoActive}
+            disabled={!input.trim() || loading}
             style={{
               position: 'absolute', right: '6px', top: '50%', transform: 'translateY(-50%)',
               width: '30px', height: '30px', borderRadius: '50%',
-              background: input.trim() && !loading && !demoActive
+              background: input.trim() && !loading
                 ? 'linear-gradient(135deg, #7c3aed, #06b6d4)'
                 : 'rgba(255,255,255,0.04)',
               border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: input.trim() && !loading && !demoActive ? 'pointer' : 'default',
+              cursor: input.trim() && !loading ? 'pointer' : 'default',
               transition: 'all 0.2s',
             }}
           >
-            <ArrowRight size={14} color={input.trim() && !loading && !demoActive ? 'white' : '#44445a'} />
+            <ArrowRight size={14} color={input.trim() && !loading ? 'white' : '#44445a'} />
           </button>
         </form>
       </div>
