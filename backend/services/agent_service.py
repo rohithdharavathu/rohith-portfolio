@@ -84,13 +84,24 @@ async def stream_answer(query: str, knowledge: dict[str, str]) -> AsyncGenerator
                 yield text
         logger.info("[Persona] Stream completed")
     except Exception as e:
-        logger.error(f"[Persona] Streaming error: {e}")
+        logger.error(
+            f"[Persona] Streaming error: {type(e).__name__}: {e} | "
+            f"API key set: {bool(os.getenv('ANTHROPIC_API_KEY'))}",
+            exc_info=True,
+        )
         yield FALLBACK_MESSAGE
 
 
 async def handle_chat(query: str) -> AsyncGenerator[str, None]:
     """Full two-call pipeline: route → fetch → stream answer."""
-    routing = await route_query(query)
+    # ── Step 1: Route ──────────────────────────────────────────────
+    try:
+        routing = await route_query(query)
+        logger.info(f"[Agent] Routing result: {routing}")
+    except Exception as e:
+        logger.error(f"[Agent] route_query raised: {type(e).__name__}: {e}", exc_info=True)
+        yield FALLBACK_MESSAGE
+        return
 
     if routing.get("deflect"):
         logger.info("[Agent] Deflecting off-topic query")
@@ -101,13 +112,27 @@ async def handle_chat(query: str) -> AsyncGenerator[str, None]:
         )
         return
 
+    # ── Step 2: Fetch knowledge nodes ─────────────────────────────
     nodes = routing.get("nodes") or DEFAULT_NODES
-    knowledge = await fetch_multiple_nodes(nodes)
-
-    if not knowledge:
-        logger.error(f"[Agent] All node fetches failed for: {nodes}")
+    logger.info(f"[Agent] Fetching nodes: {nodes}")
+    try:
+        knowledge = await fetch_multiple_nodes(nodes)
+    except Exception as e:
+        logger.error(f"[Agent] fetch_multiple_nodes raised: {type(e).__name__}: {e}", exc_info=True)
         yield FALLBACK_MESSAGE
         return
 
-    async for chunk in stream_answer(query, knowledge):
-        yield chunk
+    if not knowledge:
+        logger.error(f"[Agent] All node fetches failed for nodes={nodes} — check GITHUB_TOKEN and GITHUB_BRAIN_REPO")
+        yield FALLBACK_MESSAGE
+        return
+
+    logger.info(f"[Agent] Knowledge loaded: {list(knowledge.keys())} ({sum(len(v) for v in knowledge.values())} chars total)")
+
+    # ── Step 3: Stream answer ──────────────────────────────────────
+    try:
+        async for chunk in stream_answer(query, knowledge):
+            yield chunk
+    except Exception as e:
+        logger.error(f"[Agent] stream_answer raised: {type(e).__name__}: {e}", exc_info=True)
+        yield FALLBACK_MESSAGE

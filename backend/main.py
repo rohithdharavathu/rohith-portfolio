@@ -71,6 +71,24 @@ class DynamicCORSMiddleware(BaseHTTPMiddleware):
         return response
 
 
+log = logging.getLogger("access")
+
+class RequestLogMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        import time
+        start = time.time()
+        log.info(
+            f"→ {request.method} {request.url.path} "
+            f"origin={request.headers.get('origin', '-')!r} "
+            f"ip={request.client.host if request.client else '-'}"
+        )
+        response = await call_next(request)
+        ms = int((time.time() - start) * 1000)
+        log.info(f"← {request.method} {request.url.path} status={response.status_code} {ms}ms")
+        return response
+
+
+app.add_middleware(RequestLogMiddleware)
 app.add_middleware(DynamicCORSMiddleware)
 
 app.include_router(agent.router, prefix="/agent", tags=["agent"])
@@ -79,13 +97,17 @@ app.include_router(content.router, prefix="/content", tags=["content"])
 
 @app.get("/health")
 async def health():
+    key = os.getenv("ANTHROPIC_API_KEY", "")
     return {
         "status": "ok",
         "service": "rohith-portfolio-api",
         "env_check": {
-            "has_anthropic_key": bool(os.getenv("ANTHROPIC_API_KEY")),
-            "has_github_token": bool(os.getenv("GITHUB_TOKEN")),
+            "anthropic_key_set": bool(key),
+            "anthropic_key_prefix": key[:8] + "..." if len(key) >= 8 else "(empty)",
+            "github_token_set": bool(os.getenv("GITHUB_TOKEN")),
             "brain_repo": os.getenv("GITHUB_BRAIN_REPO", "NOT SET"),
+            "brain_branch": os.getenv("GITHUB_BRAIN_BRANCH", "main"),
+            "allowed_origins_extra": os.getenv("ALLOWED_ORIGINS", "(none)"),
         },
     }
 
