@@ -392,6 +392,15 @@ code, pre, .mono {
   z-index: 1;
 }
 
+/* ── Spotlight animation ── */
+@keyframes spotlight {
+  0% { opacity: 0; transform: translate(-72%, -62%) skewX(-17deg); }
+  100% { opacity: 1; transform: translate(-50%, -40%) skewX(-17deg); }
+}
+.animate-spotlight {
+  animation: spotlight 2s ease 0.75s 1 forwards;
+}
+
 /* ── Focus ── */
 :focus-visible { outline: 2px solid var(--accent-violet); outline-offset: 2px; }
 
