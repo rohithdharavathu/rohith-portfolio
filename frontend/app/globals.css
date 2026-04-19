@@ -392,6 +392,19 @@ code, pre, .mono {
   z-index: 1;
 }
 
+/* ── Spline lazy-load spinner ── */
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.15);
+  border-top-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* ── Spotlight animation ── */
 @keyframes spotlight {
   0% { opacity: 0; transform: translate(-72%, -62%) skewX(-17deg); }
