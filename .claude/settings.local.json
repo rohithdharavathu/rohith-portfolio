@@ -9,7 +9,13 @@
       "Bash(node *)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(pip --version)",
+      "Bash(uv --version)",
+      "Bash(pip install *)"
     ]
   }
 }
